@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--scan为true时，配置文件被修改会被重新加载;scanPeriod定义了扫描文件变化的周期，默认60000毫秒-->
+<configuration scan="true" scanPeriod="60 seconds">
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!-- 变量配置 -->
+    <property name="logFile.basePath" value="${LOG_HOME:-./logs}"/>
+    <property name="encoder.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %thread | %-5level | %logger{50} : %msg%n"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!-- 控制台设置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- INFO -->
+    <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFile.basePath}/info/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logFile.basePath}/info/info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <MaxHistory>30</MaxHistory>
+            <!--文件大小达到20MB,进行分割-->
+            <MaxFileSize>20MB</MaxFileSize>
+            <!--日志最多保留5GB大小-->
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- DEBUG -->
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFile.basePath}/debug/debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logFile.basePath}/debug/debug-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <MaxHistory>30</MaxHistory>
+            <MaxFileSize>20MB</MaxFileSize>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- WARN -->
+    <appender name="warnAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFile.basePath}/warn/warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logFile.basePath}/warn/warn-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <MaxHistory>30</MaxHistory>
+            <MaxFileSize>20MB</MaxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- ERROR -->
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFile.basePath}/error/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logFile.basePath}/error/error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <MaxHistory>30</MaxHistory>
+            <MaxFileSize>20MB</MaxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <logger name="org.springframework" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="errorAppender"/>
+    </logger>
+
+    <!--<logger name="net.sf.ehcache" level="INFO"/>-->
+    <!--<logger name="druid.sql" level="INFO"/>-->
+
+    <!-- &lt;!&ndash;MyBatis log configure &ndash;&gt;-->
+    <!--<logger name="com.apache.ibatis" level="INFO"/>-->
+    <!--<logger name="org.mybatis.spring" level="DEBUG"/>-->
+    <!--<logger name="java.sql.Connection" level="DEBUG"/>-->
+    <!--<logger name="java.sql.Statement" level="DEBUG"/>-->
+    <!--<logger name="java.sql.PreparedStatement" level="DEBUG"/>-->
+
+    <!-- &lt;!&ndash;减少部分debug日志 &ndash;&gt;-->
+    <!--<logger name="druid.sql" level="INFO"/>-->
+    <!--<logger name="org.apache.shiro" level="INFO"/>-->
+    <!--<logger name="org.mybatis.spring" level="INFO"/>-->
+    <!--<logger name="org.springframework" level="INFO"/>-->
+    <!--<logger name="org.springframework.context" level="WARN"/>-->
+    <!--<logger name="org.springframework.beans" level="WARN"/>-->
+    <!--<logger name="com.baomidou.mybatisplus" level="INFO"/>-->
+    <!--<logger name="org.apache.ibatis.io" level="INFO"/>-->
+    <!--<logger name="org.apache.velocity" level="INFO"/>-->
+    <!--<logger name="org.eclipse.jetty" level="INFO"/>-->
+    <!--<logger name="io.undertow" level="INFO"/>-->
+    <!--<logger name="org.xnio.nio" level="INFO"/>-->
+    <!--<logger name="org.thymeleaf" level="INFO"/>-->
+    <!--<logger name="springfox.documentation" level="INFO"/>-->
+    <!--<logger name="org.hibernate.validator" level="INFO"/>-->
+    <!--<logger name="com.netflix.loadbalancer" level="INFO"/>-->
+    <!--<logger name="com.netflix.hystrix" level="INFO"/>-->
+    <!--<logger name="com.netflix.zuul" level="INFO"/>-->
+    <!--<logger name="de.codecentric" level="INFO"/>-->
+    <!-- &lt;!&ndash;cache INFO &ndash;&gt;-->
+    <!--<logger name="net.sf.ehcache" level="INFO"/>-->
+    <!--<logger name="org.springframework.cache" level="INFO"/>-->
+    <!-- &lt;!&ndash;cloud &ndash;&gt;-->
+    <!--<logger name="org.apache.http" level="INFO"/>-->
+    <!--<logger name="com.netflix.discovery" level="INFO"/>-->
+    <!--<logger name="com.netflix.eureka" level="INFO"/>-->
+    <!--&lt;!&ndash; 业务日志 &ndash;&gt;-->
+    <!--<Logger name="org.springblade" level="DEBUG"/>-->
+    <!--<Logger name="org.springblade.core.version" level="INFO"/>-->
+
+    <!--当前输出层级-->
+    <!--<root level="INFO">-->
+    <!--    <appender-ref ref="STDOUT"/>-->
+    <!--    <appender-ref ref="infoAppender"/>-->
+    <!--    <appender-ref ref="debugAppender"/>-->
+    <!--    <appender-ref ref="warnAppender"/>-->
+    <!--    <appender-ref ref="errorAppender"/>-->
+    <!--</root>-->
+
+    <!--生产环境:打印控制台和输出到文件-->
+    <springProfile name="prod">
+        <root level="WARN">
+            <appender-ref ref="warnAppender"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+        <!--<logger name="com.hitenine.mapper" level="INFO" />-->
+    </springProfile>
+
+    <!--开发环境:打印控制台-->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="infoAppender"/>
+            <appender-ref ref="debugAppender"/>
+            <appender-ref ref="warnAppender"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+        <logger name="com.hitenine.mapper" level="INFO" />
+    </springProfile>
+    <!--开发环境:打印控制台-->
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="infoAppender"/>
+            <appender-ref ref="debugAppender"/>
+            <appender-ref ref="warnAppender"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+        <logger name="com.hitenine.mapper" level="INFO" />
+    </springProfile>
+
+
+</configuration>
