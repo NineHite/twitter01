@@ -1,1 +1,0 @@
-2020-05-31 19:18:43.317 | restartedMain | WARN  | org.mybatis.spring.mapper.ClassPathMapperScanner : No MyBatis mapper was found in '[com.hitenine]' package. Please check your configuration.
