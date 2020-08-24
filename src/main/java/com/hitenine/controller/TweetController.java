@@ -1,6 +1,5 @@
 package com.hitenine.controller;
 
-import com.hitenine.service.TweetService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class TweetController {
 
-    private final TweetService tweetService;
+    /*private final TweetService tweetService;
     public TweetController(TweetService tweetService) {
         this.tweetService = tweetService;
-    }
+    }*/
 }
