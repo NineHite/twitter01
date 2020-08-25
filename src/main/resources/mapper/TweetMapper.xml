@@ -10,4 +10,16 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+
+
+
+    <select id="findPicturesByTweetId" resultType="String" parameterType="Long">
+        select p.url
+        from tweet
+                 inner join tweet_pictures tp on tweet.tweet_id = tp.tweet_id
+                 inner join picture p on tp.picture_id = p.picture_id
+        where tp.tweet_id = #{tweetId};
+    </select>
+
+
 </mapper>
