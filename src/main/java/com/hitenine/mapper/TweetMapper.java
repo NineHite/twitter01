@@ -15,5 +15,6 @@ public interface TweetMapper extends BaseMapper<Tweet> {
     /**
     *  根据tweetId查找对应的图片
     */
-    public List<String> findPicturesByTweetId(Long tweetId);
+    List<String> findPicturesByTweetId(Long tweetId);
+
 }
