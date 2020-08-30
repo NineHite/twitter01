@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 @CrossOrigin
-public class TweetController {
+public class TweetController { 
 
     /*private final TweetService tweetService;
     public TweetController(TweetService tweetService) {
